@@ -146,6 +146,7 @@ header h1 {
   width: 100px;
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
   margin: 0;
+  position: relative;
 }
 
 .project-dropdown-label {
@@ -178,6 +179,33 @@ header h1 {
   background-repeat: no-repeat;
   image-rendering: pixelated;
   image-rendering: -moz-sharp-edges;
+}
+
+.project-dropdown-arrow:hover {
+  cursor: pointer;
+}
+
+.project-list {
+  position: absolute;
+  list-style: none;
+  left: 2px;
+  top: 10px;
+  background: #f9f9f9;
+  overflow: hidden;
+  padding: 0;
+  transition: 0.3s;
+  z-index: 3;
+  min-width: 100px;
+  display: none;
+}
+
+.project-list.deploy {
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+  display: block;
+}
+
+.project-list li {
+  margin: 5px;
 }
 
 .palette-input {
@@ -254,9 +282,11 @@ header h1 {
   display: flex;
   justify-content: space-between;
   max-width: 700px;
+  flex-flow: row wrap;
 }
 
 .project {
+  margin-top: 2rem;
   width: 340px;
 }
 

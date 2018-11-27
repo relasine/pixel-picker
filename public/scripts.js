@@ -1,15 +1,23 @@
 const newPaletteBtn = document.querySelector(".new-palette-btn");
 const swatchRow = document.querySelector(".swatch-row");
+const newPaletteSubmit = document.querySelector(".new-palette-submit");
 const newProjectBtn = document.querySelector(".new-project-submit");
 const noProjectNameWarning = document.querySelector(".no-project-name-warning");
+const projectsSection = document.querySelector(".projects-section");
 const projectDropdownLabelText = document.querySelector(
   ".project-dropdown-label-text"
 );
+const projectList = document.querySelector(".project-list");
+const projectDropdownArrow = document.querySelector(".project-dropdown-arrow");
+
 const projects = [];
 
 newPaletteBtn.addEventListener("click", generateNewPalette);
 swatchRow.addEventListener("click", toggleLock);
 newProjectBtn.addEventListener("click", addProject);
+newPaletteSubmit.addEventListener("click", addPalette);
+projectsSection.addEventListener("click", deletePalette);
+projectDropdownArrow.addEventListener("click", handleDropdown);
 
 class Project {
   constructor(name) {
@@ -19,13 +27,14 @@ class Project {
 }
 
 class Palette {
-  constructor(colors) {
+  constructor(colors, name) {
+    this.name = name;
     this.color1 = colors[0];
     this.color2 = colors[1];
     this.color3 = colors[2];
     this.color4 = colors[3];
     this.color5 = colors[4];
-    this.color6 = colors[5];
+    this.id = Date.now();
   }
 }
 
@@ -100,8 +109,6 @@ function createNewProject(projectName) {
 }
 
 function addProjectHTML(project) {
-  const projectsSection = document.querySelector(".projects-section");
-
   const newProjectElement = `
     <article class='project' id=${project.id}>
       <h4 class='project-label'>${project.name}</h4>
@@ -110,6 +117,8 @@ function addProjectHTML(project) {
 
   projectsSection.innerHTML += newProjectElement;
   projectDropdownLabelText.innerText = project.name;
+
+  projectList.innerHTML += `<li class='project-list-item'>${project.name}</li>`;
 }
 
 function noProjectName() {
@@ -126,4 +135,58 @@ function duplicateProjectName() {
   setTimeout(() => {
     duplicateProjectNameWarning.classList.remove("show");
   }, 5000);
+}
+
+function addPalette() {
+  const paletteNameInput = document.querySelector(".palette-input");
+  const palette = [];
+
+  let paletteName = paletteNameInput.value || "palette";
+
+  for (let i = 0; i < swatchRow.children.length; i++) {
+    if (swatchRow.children[i].children[1].className === "unlocked") {
+      palette.push(swatchRow.children[i].children[0].innerText);
+    }
+  }
+
+  const newPalette = new Palette(palette, paletteName);
+
+  addPaletteHTML(newPalette);
+}
+
+function addPaletteHTML(newPalette) {
+  const array = Array.from(projectsSection.children);
+
+  const ourProject = array.find(child => {
+    return child.children[0].innerText === projectDropdownLabelText.innerText;
+  });
+
+  console.log(newPalette);
+
+  const newPaletteElement = `
+    <div class='palette' id=${newPalette.id}>
+      <p class='palette-label'>${newPalette.name}</p>
+      <div style='background:${newPalette.color1}' class='hex hex1'></div>
+      <div style='background:${newPalette.color2}' class='hex hex2'></div>
+      <div style='background:${newPalette.color3}' class='hex hex3'></div>
+      <div style='background:${newPalette.color4}' class='hex hex4'></div>
+      <div style='background:${newPalette.color5}' class='hex hex5'></div>
+      <div class='delete-btn'></div>
+    </div>
+  `;
+
+  ourProject.innerHTML += newPaletteElement;
+}
+
+function deletePalette(event) {
+  if (event.target.classList.contains("delete-btn")) {
+    const id = event.target.parentNode;
+    event.target.parentNode.parentNode.removeChild(id);
+  }
+}
+
+function handleDropdown() {
+  const dropdownList = document.querySelector(".project-list");
+
+  dropdownList.classList.toggle("deploy");
 }
