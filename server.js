@@ -2,6 +2,8 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const app = express();
 
+app.locals.title = "PixelPicker";
+
 app.use(bodyParser.json());
 
 app.set("port", process.env.PORT || 3000);
