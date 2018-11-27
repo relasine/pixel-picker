@@ -4,11 +4,11 @@
   </head>
   <body>
     <header>
-      <img src='./assets/images/char1.png' alt='pixel-character' />
+      <div class='char1'></div>
       <h1>PixelPicker</h1>
-      <img src='./assets/images/char2.png' alt='pixel-character' />
+      <div class='char2'></div>
     </header>
-    <section class='swatch-row'>
+    <main class='swatch-row'>
       <div class='swatch swatch-one'>
         <p class='hex-value'>#000000</p>
         <div class='unlocked'></div>
@@ -29,12 +29,12 @@
         <p class='hex-value'>#000000</p>
         <div class='unlocked'></div>
       </div>
-    </section>
+    </main>
     <section class='palette-generator'>
       <button class='new-palette-btn'>generate new palette</button>
       <section class='palette-generator-row'>
         <div class='project-dropdown'>
-          <div class='project-dropdown-label'></div>
+          <div class='project-dropdown-label'><p class='project-dropdown-label-text'></p></div>
           <div class='project-dropdown-backer'>
             <div class="project-dropdown-arrow"></div>
           </div>
@@ -54,6 +54,7 @@
       <div class='new-project-row'>
         <input class='project-name-input' type='text name' name='project-input' placeholder='project name'/>
         <div class='new-project-submit'></div>
+        <p class='no-project-name-warning'>Please enter a project name</p>
       </div>
     </section>
     <section class='projects-section'>
@@ -68,37 +69,7 @@
           <div class='hex hex5'></div>
           <div class='delete-btn'></div>
         </div>
-        <div class='palette'>
-            <p class='palette-label'>palette 1</p>
-            <div class='hex hex1'></div>
-            <div class='hex hex2'></div>
-            <div class='hex hex3'></div>
-            <div class='hex hex4'></div>
-            <div class='hex hex5'></div>
-            <div class='delete-btn'></div>
-          </div>
       </article>
-      <article class='project project-one'>
-          <h4 class='project-label'>project 1</h4>
-          <div class='palette'>
-            <p class='palette-label'>palette 1</p>
-            <div class='hex hex1'></div>
-            <div class='hex hex2'></div>
-            <div class='hex hex3'></div>
-            <div class='hex hex4'></div>
-            <div class='hex hex5'></div>
-            <div class='delete-btn'></div>
-          </div>
-          <div class='palette'>
-              <p class='palette-label'>palette 1</p>
-              <div class='hex hex1'></div>
-              <div class='hex hex2'></div>
-              <div class='hex hex3'></div>
-              <div class='hex hex4'></div>
-              <div class='hex hex5'></div>
-              <div class='delete-btn'></div>
-            </div>
-        </article>
     </section>
     <script type="text/javascript" src="scripts.js" />
   </body>

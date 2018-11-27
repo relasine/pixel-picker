@@ -15,22 +15,46 @@ body {
 
 header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   margin: 0 auto 2rem;
-  padding-top: 1rem;
-  width: 350px;
+  padding: 1rem 3rem 0;
+  width: 500px;
+  height: 150px;
+  background: url("./assets/images/path.png");
+  background-repeat: no-repeat;
+  background-size: 1000px 200px;
+  background-position: center;
+  image-rendering: pixelated;
 }
 
 header h1 {
   font-size: 60px;
   margin: 8px;
   line-height: 50px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
-header img {
+.char1,
+.char2 {
   height: 50px;
+  width: 30px;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
+  margin-bottom: 20px;
+  background-repeat: no-repeat;
+}
+
+.char1 {
+  background-size: cover;
+  background-position: center;
+  animation: nodding 3s infinite linear;
+}
+
+.char2 {
+  background-size: cover;
+  background-position: center;
+  animation: laughing 3s infinite linear;
 }
 
 /* -- PALETTE GENERATOR -- */
@@ -51,18 +75,38 @@ header img {
   justify-content: center;
   align-items: end;
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+  transition: 0.3s;
 }
 
-.unlocked {
-  margin-top: 15px;
-  width: 21px;
-  height: 24px;
+.locked {
+  margin-top: 18px;
+  width: 24px;
+  height: 28px;
   background: url("./assets/images/locked.png");
   background-size: cover;
   background-repeat: no-repeat;
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   background-repeat: no-repeat;
+  transition: 0.3s;
+}
+
+.unlocked {
+  margin-top: 15px;
+  width: 22px;
+  height: 30px;
+  background: url("./assets/images/unlocked.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  background-repeat: no-repeat;
+  transition: 0.3s;
+}
+
+.locked:hover,
+.unlocked:hover {
+  cursor: pointer;
 }
 
 .hex-value {
@@ -110,6 +154,12 @@ header img {
   background: #ebebeb;
 }
 
+.project-dropdown-label-text {
+  font-size: 1rem;
+  margin-top: 0.4rem;
+  margin-left: 0.4rem;
+}
+
 .project-dropdown-backer {
   height: 22px;
   width: 20px;
@@ -153,8 +203,6 @@ header img {
   margin: 2rem auto;
 }
 
-/* -- PROJECTS SECTION -- */
-
 .new-project-label {
   padding-left: 7px;
   margin: 3rem auto 0;
@@ -167,6 +215,7 @@ header img {
   justify-content: space-between;
   width: 230px;
   margin: auto;
+  position: relative;
 }
 
 .project-name-input {
@@ -185,6 +234,19 @@ header img {
   image-rendering: pixelated;
 }
 
+.no-project-name-warning {
+  position: absolute;
+  top: 10px;
+  left: 7px;
+  height: 0;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.no-project-name-warning.show {
+  height: 13px;
+}
+
 /* -- PALETTES -- */
 
 .projects-section {
@@ -194,19 +256,23 @@ header img {
   max-width: 700px;
 }
 
+.project {
+  width: 340px;
+}
+
 .project-label {
   font-size: 1.4rem;
   margin: 0;
   background: #ebebeb;
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
-  width: 100px;
+  min-width: 100px;
   height: 30px;
   line-height: 30px;
   text-align: center;
 }
 
 .palette {
-  margin-top: 1rem;
+  margin: 1rem auto;
   display: flex;
   width: 300px;
 }
@@ -254,4 +320,198 @@ header img {
 
 .hex5 {
   background: #141414;
+}
+
+/* -- ANIMATION --  */
+
+@keyframes nodding {
+  0% {
+    background: url("./assets/images/char1/nod2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  50% {
+    background: url("./assets/images/char1/nod2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  50.01% {
+    background: url("./assets/images/char1/nod1.png");
+    background-size: cover;
+    background-position: center;
+  }
+  55.0% {
+    background: url("./assets/images/char1/nod1.png");
+    background-size: cover;
+    background-position: center;
+  }
+  55.01% {
+    background: url("./assets/images/char1/nod2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  60.00% {
+    background: url("./assets/images/char1/nod2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  60.01% {
+    background: url("./assets/images/char1/nod3.png");
+    background-size: cover;
+    background-position: center;
+  }
+  65.00% {
+    background: url("./assets/images/char1/nod3.png");
+    background-size: cover;
+    background-position: center;
+  }
+  65.01% {
+    background: url("./assets/images/char1/nod1.png");
+    background-size: cover;
+    background-position: center;
+  }
+  70.0% {
+    background: url("./assets/images/char1/nod1.png");
+    background-size: cover;
+    background-position: center;
+  }
+  70.01% {
+    background: url("./assets/images/char1/nod2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  75.00% {
+    background: url("./assets/images/char1/nod2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  75.01% {
+    background: url("./assets/images/char1/nod3.png");
+    background-size: cover;
+    background-position: center;
+  }
+  80.00% {
+    background: url("./assets/images/char1/nod3.png");
+    background-size: cover;
+    background-position: center;
+  }
+  80.01% {
+    background: url("./assets/images/char1/nod2.png");
+    background-size: cover;
+    background-position: center;
+  }
+
+  100% {
+    background: url("./assets/images/char1/nod2.png");
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+@keyframes laughing {
+  0% {
+    background: url("./assets/images/char2/stand.png");
+    background-size: cover;
+    background-position: center;
+  }
+  49.99% {
+    background: url("./assets/images/char2/stand.png");
+    background-size: cover;
+    background-position: center;
+  }
+  50% {
+    background: url("./assets/images/char2/laugh1.png");
+    background-size: cover;
+    background-position: center;
+  }
+  53% {
+    background: url("./assets/images/char2/laugh1.png");
+    background-size: cover;
+    background-position: center;
+  }
+  53.01% {
+    background: url("./assets/images/char2/laugh2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  56% {
+    background: url("./assets/images/char2/laugh2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  56.01% {
+    background: url("./assets/images/char2/laugh3.png");
+    background-size: cover;
+    background-position: center;
+  }
+  59% {
+    background: url("./assets/images/char2/laugh3.png");
+    background-size: cover;
+    background-position: center;
+  }
+  59.01% {
+    background: url("./assets/images/char2/laugh1.png");
+    background-size: cover;
+    background-position: center;
+  }
+  62% {
+    background: url("./assets/images/char2/laugh1.png");
+    background-size: cover;
+    background-position: center;
+  }
+  62.01% {
+    background: url("./assets/images/char2/laugh2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  65% {
+    background: url("./assets/images/char2/laugh2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  65.01% {
+    background: url("./assets/images/char2/laugh3.png");
+    background-size: cover;
+    background-position: center;
+  }
+  68% {
+    background: url("./assets/images/char2/laugh1.png");
+    background-size: cover;
+    background-position: center;
+  }
+  71% {
+    background: url("./assets/images/char2/laugh1.png");
+    background-size: cover;
+    background-position: center;
+  }
+  71.01% {
+    background: url("./assets/images/char2/laugh2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  74% {
+    background: url("./assets/images/char2/laugh2.png");
+    background-size: cover;
+    background-position: center;
+  }
+  74.01% {
+    background: url("./assets/images/char2/laugh3.png");
+    background-size: cover;
+    background-position: center;
+  }
+  77% {
+    background: url("./assets/images/char2/laugh3.png");
+    background-size: cover;
+    background-position: center;
+  }
+  77.01% {
+    background: url("./assets/images/char2/stand.png");
+    background-size: cover;
+    background-position: center;
+  }
+  100% {
+    background: url("./assets/images/char2/stand.png");
+    background-size: cover;
+    background-position: center;
+  }
 }
