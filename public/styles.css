@@ -50,6 +50,7 @@ header img {
   display: flex;
   justify-content: center;
   align-items: end;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
 .unlocked {
@@ -182,4 +183,75 @@ header img {
   background-size: cover;
   background-repeat: no-repeat;
   image-rendering: pixelated;
+}
+
+/* -- PALETTES -- */
+
+.projects-section {
+  margin: 2rem auto 0;
+  display: flex;
+  justify-content: space-between;
+  max-width: 700px;
+}
+
+.project-label {
+  font-size: 1.4rem;
+  margin: 0;
+  background: #ebebeb;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+
+.palette {
+  margin-top: 1rem;
+  display: flex;
+  width: 300px;
+}
+
+.palette-label {
+  font-size: 1.2rem;
+  margin: 0;
+  line-height: 25px;
+}
+
+.hex,
+.delete-btn {
+  width: 22px;
+  height: 22px;
+}
+
+.delete-btn {
+  background: url("./assets/images/delete.png");
+  background-size: cover;
+  background-repeat: none;
+  image-rendering: pixelated;
+  margin-left: 1rem;
+}
+
+.hex {
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+  margin-left: 1rem;
+}
+
+.hex1 {
+  background: #195019;
+}
+
+.hex2 {
+  background: #a7189e;
+}
+
+.hex3 {
+  background: #4be124;
+}
+
+.hex4 {
+  background: #c83910;
+}
+
+.hex5 {
+  background: #141414;
 }
