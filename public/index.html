@@ -32,6 +32,8 @@
     </main>
     <section class='palette-generator'>
       <button class='new-palette-btn'>generate new palette</button>
+      <p class='new-palette-label'>add palette to project:</p>
+
       <section class='palette-generator-row'>
         <div class='project-dropdown'>
           <div class='project-dropdown-label'>
@@ -43,27 +45,31 @@
           <ul class='project-list'>
           </ul>
         </div>
+        <form class='palette-input-form'>
         <input 
           type='text' 
           class='palette-input' 
           name='palette-input' 
           placeholder="palette name"
         />
-        <div class='new-palette-submit'></div>
+        <button class='new-palette-submit'></button>
+        </form>
       </section> 
     </section>
     <div class='divider'></div>
     <section class='new-project-section'>
       <p class='new-project-label'>create new project:</p>
       <div class='new-project-row'>
-        <input class='project-name-input' type='text name' name='project-input' placeholder='project name'/>
-        <div class='new-project-submit'></div>
+        <form class='project-input-form'>
+          <input class='project-name-input' type='text name' name='project-input' placeholder='project name'/>
+          <button class='new-project-submit'></button>
+        </form>
         <p class='no-project-name-warning'>Please enter a project name</p>
       </div>
     </section>
     <section class='projects-section'>
     
     </section>
-    <script type="text/javascript" src="scripts.js" />
+    <script type="text/javascript" src="./scripts/app.js" />
   </body>
 </html>

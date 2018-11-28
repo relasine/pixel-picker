@@ -4,6 +4,10 @@
   src: url("./assets/fonts/ChronoType.ttf") format("ttf");
 }
 
+*:focus {
+  outline: none;
+}
+
 body {
   padding: 0;
   margin: 0;
@@ -141,6 +145,11 @@ header h1 {
   justify-content: space-between;
 }
 
+.new-palette-label {
+  margin: 0 0 0 143px;
+  font-size: 1.1rem;
+}
+
 .project-dropdown {
   display: flex;
   width: 100px;
@@ -222,6 +231,11 @@ header h1 {
   background-size: cover;
   background-repeat: no-repeat;
   image-rendering: pixelated;
+  border: none;
+}
+
+.palette-input-form {
+  margin: 0;
 }
 
 .divider {
@@ -260,6 +274,7 @@ header h1 {
   background-size: cover;
   background-repeat: no-repeat;
   image-rendering: pixelated;
+  border: none;
 }
 
 .no-project-name-warning {
