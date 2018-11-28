@@ -2,7 +2,7 @@ module.exports = {
   development: {
     client: "pg",
     connection: {
-      filename: "postgres://localhost/projects"
+      filename: "postgres://localhost/hex_collections"
     },
     migrations: {
       directory: "./db/migrations"
