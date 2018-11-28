@@ -24,12 +24,18 @@ app.post("api/v1/projects", (request, response) => {
   return response.status(201).json();
 });
 
-app.post("api/v1/palettes", (request, response) => {
+app.post("api/v1/projects/:project_id/palettes", (request, response) => {
   let palette = request.body;
 
   // CREATE NEW PALETTE //
 
   return response.status(201).json();
+});
+
+app.get("api/v1/projects/:project_id/palettes", (request, response) => {
+  // Serve PALETTE //
+
+  return response.status(200).json();
 });
 
 app.delete("api/v1/palettes", (request, response) => {
