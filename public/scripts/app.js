@@ -10,8 +10,8 @@ const projectDropdownLabelText = document.querySelector(
 const projectList = document.querySelector(".project-list");
 const projectDropdownArrow = document.querySelector(".project-dropdown-arrow");
 const paletteNameInput = document.querySelector(".palette-input");
-
-const projects = [];
+let projects = [];
+let palettes = [];
 
 newPaletteBtn.addEventListener("click", generateNewPalette);
 swatchRow.addEventListener("click", toggleLock);
@@ -22,22 +22,53 @@ projectDropdownArrow.addEventListener("click", handleDropdown);
 projectList.addEventListener("click", selectProject);
 
 class Project {
-  constructor(name) {
-    this.name = name;
-    this.ide = Date.now();
+  constructor(title) {
+    this.title = title;
   }
 }
 
 class Palette {
-  constructor(colors, name) {
-    this.name = name;
+  constructor(colors, title) {
+    this.title = title;
     this.color1 = colors[0];
     this.color2 = colors[1];
     this.color3 = colors[2];
     this.color4 = colors[3];
     this.color5 = colors[4];
-    this.id = Date.now();
   }
+}
+
+getProjects();
+
+function getProjects() {
+  fetch("/api/v1/projects")
+    .then(response => response.json())
+    .then(data => {
+      if (data.length > 0) {
+        setProjects(data);
+      }
+    })
+    .catch(error => console.log(error.message));
+}
+
+function getPalettes(project) {
+  fetch(`/api/v1/projects/${project}/palettes`)
+    .then(response => response.json())
+    .then(data => {
+      if (data) {
+        data.forEach(palette => {
+          addPaletteHTML(palette, project);
+        });
+      }
+    })
+    .catch(error => console.log(error.message));
+}
+
+function setProjects(data) {
+  data.forEach(project => {
+    addProjectHTML(project);
+    getPalettes(project.id);
+  });
 }
 
 function generateNewPalette() {
@@ -108,20 +139,38 @@ function createNewProject(projectName) {
   const newProject = new Project(projectName);
   projects.push(newProject);
 
-  addProjectHTML(newProject);
+  sendProjectToServer(newProject);
 }
 
 function addProjectHTML(project) {
   const newProjectElement = `
     <article class='project' id=${project.id}>
-      <h4 class='project-label'>${project.name}</h4>
+      <h4 class='project-label'>${project.title}</h4>
     </article>
   `;
 
   projectsSection.innerHTML += newProjectElement;
-  projectDropdownLabelText.innerText = project.name;
+  projectDropdownLabelText.innerText = project.title;
+  projectDropdownLabelText.id = project.id;
 
-  projectList.innerHTML += `<li class='project-list-item'>${project.name}</li>`;
+  projectList.innerHTML += `<li id=${project.id} class='project-list-item'>${
+    project.title
+  }</li>`;
+}
+
+function sendProjectToServer(project) {
+  return fetch("/api/v1/projects", {
+    method: "POST",
+    mode: "cors",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    body: JSON.stringify(project)
+  })
+    .then(response => response.json())
+    .then(data => addProjectHTML({ ...project, id: data.id }))
+    .catch(error => console.log(error.message));
 }
 
 function noProjectName() {
@@ -154,15 +203,16 @@ function addPalette(event) {
 
   const newPalette = new Palette(palette, paletteName);
 
-  addPaletteHTML(newPalette);
+  sendPaletteToServer(newPalette);
   paletteNameInput.value = "";
 }
 
-function addPaletteHTML(newPalette) {
+function addPaletteHTML(newPalette, id) {
+  console.log(newPalette, id);
   const array = Array.from(projectsSection.children);
 
   const ourProject = array.find(child => {
-    return child.children[0].innerText === projectDropdownLabelText.innerText;
+    return parseInt(child.id) === id;
   });
 
   if (!ourProject) {
@@ -170,20 +220,37 @@ function addPaletteHTML(newPalette) {
   }
 
   const newPaletteElement = `
-    <div class='palette' id=${newPalette.id}>
-      <p class='palette-label'>${newPalette.name}</p>
+    <div class='palette'>
+      <p class='palette-label'>${newPalette.title}</p>
       <div class='hex-row'>
         <div style='background:${newPalette.color1}' class='hex hex1'></div>
         <div style='background:${newPalette.color2}' class='hex hex2'></div>
         <div style='background:${newPalette.color3}' class='hex hex3'></div>
         <div style='background:${newPalette.color4}' class='hex hex4'></div>
         <div style='background:${newPalette.color5}' class='hex hex5'></div>
-        <div class='delete-btn'></div>
+        <div class='delete-btn' id=${newPalette.id}></div>
       </div>
     </div>
   `;
 
   ourProject.innerHTML += newPaletteElement;
+}
+
+function sendPaletteToServer(palette) {
+  return fetch(`/api/v1/projects/${projectDropdownLabelText.id}/palettes`, {
+    method: "POST",
+    mode: "cors",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    body: JSON.stringify(palette)
+  })
+    .then(response => response.json())
+    .then(data =>
+      addPaletteHTML(palette, parseInt(projectDropdownLabelText.id))
+    )
+    .catch(error => console.log(error.message));
 }
 
 function deletePalette(event) {
@@ -203,6 +270,7 @@ function selectProject(event) {
   const dropdownList = document.querySelector(".project-list");
   if (event.target.classList.contains("project-list-item")) {
     projectDropdownLabelText.innerText = event.target.innerText;
+    projectDropdownLabelText.id = event.target.id;
     dropdownList.classList.toggle("deploy");
   }
 }

@@ -13,12 +13,17 @@ app.use(express.static("public"));
 app.set("port", process.env.PORT || 3000);
 
 app.get("/api/v1/projects", (request, response) => {
-  let projects;
-
-  return response.status(200).json(projects);
+  database("projects")
+    .select()
+    .then(projects => {
+      response.status(200).json(projects);
+    })
+    .catch(error => {
+      response.status(500).json({ error: error.message });
+    });
 });
 
-app.post("api/v1/projects", (request, response) => {
+app.post("/api/v1/projects", (request, response) => {
   const project = request.body;
 
   if (!project.title) {
@@ -33,12 +38,12 @@ app.post("api/v1/projects", (request, response) => {
       response.status(201).json({ id: project[0] });
     })
     .catch(error => {
-      response.status(500().json({ error }));
+      response.status(500).json({ error });
     });
 });
 
-app.post("api/v1/projects/:project_id/palettes", (request, response) => {
-  const palette = { ...request.body, project_id: request.params };
+app.post("/api/v1/projects/:project_id/palettes", (request, response) => {
+  const palette = { ...request.body, project_id: request.params.project_id };
 
   if (!palette.title) {
     return response.status(422).send({
@@ -52,14 +57,26 @@ app.post("api/v1/projects/:project_id/palettes", (request, response) => {
       response.status(201).json({ id: palette[0] });
     })
     .catch(error => {
-      response.status(500().json({ error }));
+      response.status(500).json({ error });
     });
 });
 
-app.get("api/v1/projects/:project_id/palettes", (request, response) => {
-  // Serve PALETTE //
+app.get("/api/v1/projects/:project_id/palettes", (request, response) => {
+  const project = request.params.project_id;
 
-  return response.status(200).json();
+  database("palettes")
+    .where("project_id", project)
+    .select()
+    .then(palettes => {
+      if (palettes.length > 0) {
+        response.status(200).json(palettes);
+      } else {
+        response.status(200).json([]);
+      }
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.delete("api/v1/palettes", (request, response) => {
