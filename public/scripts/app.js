@@ -10,7 +10,7 @@ const projectDropdownLabelText = document.querySelector(
 const projectList = document.querySelector(".project-list");
 const projectDropdownArrow = document.querySelector(".project-dropdown-arrow");
 const paletteNameInput = document.querySelector(".palette-input");
-const projects = [];
+let projects = [];
 
 newPaletteBtn.addEventListener("click", generateNewPalette);
 swatchRow.addEventListener("click", toggleLock);
@@ -23,7 +23,6 @@ projectList.addEventListener("click", selectProject);
 class Project {
   constructor(title) {
     this.title = title;
-    this.id = Date.now();
   }
 }
 
@@ -35,21 +34,27 @@ class Palette {
     this.color3 = colors[2];
     this.color4 = colors[3];
     this.color5 = colors[4];
-    this.id = Date.now();
   }
 }
 
 getProjects();
 
 function getProjects() {
-  const projects = fetch("/api/v1/projects")
+  fetch("/api/v1/projects")
     .then(response => response.json())
     .then(data => {
-      if (data != []) {
-        projects = data;
+      if (data.length > 0) {
+        setProjects(data);
       }
+      console.log(projects);
     })
     .catch(error => console.log(error.message));
+}
+
+function setProjects(data) {
+  data.forEach(project => {
+    addProjectHTML(project);
+  });
 }
 
 function generateNewPalette() {
@@ -120,6 +125,7 @@ function createNewProject(projectName) {
   const newProject = new Project(projectName);
   projects.push(newProject);
 
+  console.log(newProject);
   sendProjectToServer(newProject);
   addProjectHTML(newProject);
 }
@@ -200,7 +206,7 @@ function addPaletteHTML(newPalette) {
   }
 
   const newPaletteElement = `
-    <div class='palette' id=${newPalette.id}>
+    <div class='palette'>
       <p class='palette-label'>${newPalette.name}</p>
       <div class='hex-row'>
         <div style='background:${newPalette.color1}' class='hex hex1'></div>

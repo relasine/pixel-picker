@@ -32,13 +32,15 @@ app.post("/api/v1/projects", (request, response) => {
     });
   }
 
+  console.log(project);
+
   database("projects")
     .insert(project, "id")
     .then(project => {
       response.status(201).json({ id: project[0] });
     })
     .catch(error => {
-      response.status(500().json({ error }));
+      response.status(500).json({ error });
     });
 });
 
