@@ -127,10 +127,10 @@ function createNewProject(projectName) {
 
   console.log(newProject);
   sendProjectToServer(newProject);
-  addProjectHTML(newProject);
 }
 
 function addProjectHTML(project) {
+  console.log(project);
   const newProjectElement = `
     <article class='project' id=${project.id}>
       <h4 class='project-label'>${project.title}</h4>
@@ -156,7 +156,7 @@ function sendProjectToServer(project) {
     body: JSON.stringify(project)
   })
     .then(response => response.json())
-    .then(data => console.log(data))
+    .then(data => addProjectHTML({ ...project, id: data.id }))
     .catch(error => console.log(error.message));
 }
 
