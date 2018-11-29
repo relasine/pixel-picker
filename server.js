@@ -32,8 +32,6 @@ app.post("/api/v1/projects", (request, response) => {
     });
   }
 
-  console.log(project);
-
   database("projects")
     .insert(project, "id")
     .then(project => {
@@ -56,7 +54,6 @@ app.post("/api/v1/projects/:project_id/palettes", (request, response) => {
   database("palettes")
     .insert(palette, "id")
     .then(palette => {
-      console.log(palette);
       response.status(201).json({ id: palette[0] });
     })
     .catch(error => {
@@ -67,13 +64,10 @@ app.post("/api/v1/projects/:project_id/palettes", (request, response) => {
 app.get("/api/v1/projects/:project_id/palettes", (request, response) => {
   const project = request.params.project_id;
 
-  console.log(project);
-
   database("palettes")
     .where("project_id", project)
     .select()
     .then(palettes => {
-      console.log(palettes);
       if (palettes.length > 0) {
         response.status(200).json(palettes);
       } else {
