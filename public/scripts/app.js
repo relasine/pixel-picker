@@ -9,6 +9,7 @@ const projectDropdownLabelText = document.querySelector(
 );
 const projectList = document.querySelector(".project-list");
 const projectDropdownArrow = document.querySelector(".project-dropdown-arrow");
+const paletteNameInput = document.querySelector(".palette-input");
 
 const projects = [];
 
@@ -141,7 +142,6 @@ function duplicateProjectName() {
 
 function addPalette(event) {
   event.preventDefault();
-  const paletteNameInput = document.querySelector(".palette-input");
   const palette = [];
 
   let paletteName = paletteNameInput.value || "palette";
@@ -155,6 +155,7 @@ function addPalette(event) {
   const newPalette = new Palette(palette, paletteName);
 
   addPaletteHTML(newPalette);
+  paletteNameInput.value = "";
 }
 
 function addPaletteHTML(newPalette) {
@@ -171,12 +172,14 @@ function addPaletteHTML(newPalette) {
   const newPaletteElement = `
     <div class='palette' id=${newPalette.id}>
       <p class='palette-label'>${newPalette.name}</p>
-      <div style='background:${newPalette.color1}' class='hex hex1'></div>
-      <div style='background:${newPalette.color2}' class='hex hex2'></div>
-      <div style='background:${newPalette.color3}' class='hex hex3'></div>
-      <div style='background:${newPalette.color4}' class='hex hex4'></div>
-      <div style='background:${newPalette.color5}' class='hex hex5'></div>
-      <div class='delete-btn'></div>
+      <div class='hex-row'>
+        <div style='background:${newPalette.color1}' class='hex hex1'></div>
+        <div style='background:${newPalette.color2}' class='hex hex2'></div>
+        <div style='background:${newPalette.color3}' class='hex hex3'></div>
+        <div style='background:${newPalette.color4}' class='hex hex4'></div>
+        <div style='background:${newPalette.color5}' class='hex hex5'></div>
+        <div class='delete-btn'></div>
+      </div>
     </div>
   `;
 
