@@ -1,6 +1,9 @@
 const bodyParser = require("body-parser");
 const express = require("express");
 const app = express();
+const environment = process.env.NODE_ENV || "development";
+const configuration = require("./knexfile")[environment];
+const database = require("knex")(configuration);
 
 app.locals.title = "PixelPicker";
 
@@ -17,19 +20,39 @@ app.get("/api/v1/projects", (request, response) => {
 });
 
 app.post("api/v1/projects", (request, response) => {
-  let project = request.body;
+  const project = request.body;
 
-  // CREATE NEW PROJECT //
+  if (!project.title) {
+    return response
+      .status(422)
+      .send({error: `Expected format {title: <String>}. You're missing a 'title' property.`});
+  }
 
-  return response.status(201).json();
+  database('projects').insert(project, 'id')
+    .then(project => {
+      response.status(201).json({ id: project[0] })
+    })
+    .catch(error => {
+      response.status(500().json({ error });
+    })
 });
 
 app.post("api/v1/projects/:project_id/palettes", (request, response) => {
-  let palette = request.body;
+  const palette = {...request.body, project_id: request.params};
 
-  // CREATE NEW PALETTE //
+  if (!palette.title) {
+    return response
+      .status(422)
+      .send({error: `Expected format {title: <String>}. You're missing a 'title' property.`});
+  }
 
-  return response.status(201).json();
+  database('palettes').insert(palette, 'id')
+    .then(palette => {
+      response.status(201).json({ id: palette[0] })
+    })
+    .catch(error => {
+      response.status(500().json({ error });
+    })
 });
 
 app.get("api/v1/projects/:project_id/palettes", (request, response) => {
