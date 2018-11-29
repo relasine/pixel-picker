@@ -10,7 +10,6 @@ const projectDropdownLabelText = document.querySelector(
 const projectList = document.querySelector(".project-list");
 const projectDropdownArrow = document.querySelector(".project-dropdown-arrow");
 const paletteNameInput = document.querySelector(".palette-input");
-
 const projects = [];
 
 newPaletteBtn.addEventListener("click", generateNewPalette);
@@ -22,9 +21,9 @@ projectDropdownArrow.addEventListener("click", handleDropdown);
 projectList.addEventListener("click", selectProject);
 
 class Project {
-  constructor(name) {
-    this.name = name;
-    this.ide = Date.now();
+  constructor(title) {
+    this.title = title;
+    this.id = Date.now();
   }
 }
 
@@ -38,6 +37,19 @@ class Palette {
     this.color5 = colors[4];
     this.id = Date.now();
   }
+}
+
+getProjects();
+
+function getProjects() {
+  const projects = fetch("/api/v1/projects")
+    .then(response => response.json())
+    .then(data => {
+      if (data != []) {
+        projects = data;
+      }
+    })
+    .catch(error => console.log(error.message));
 }
 
 function generateNewPalette() {
@@ -108,20 +120,38 @@ function createNewProject(projectName) {
   const newProject = new Project(projectName);
   projects.push(newProject);
 
+  sendProjectToServer(newProject);
   addProjectHTML(newProject);
 }
 
 function addProjectHTML(project) {
   const newProjectElement = `
     <article class='project' id=${project.id}>
-      <h4 class='project-label'>${project.name}</h4>
+      <h4 class='project-label'>${project.title}</h4>
     </article>
   `;
 
   projectsSection.innerHTML += newProjectElement;
-  projectDropdownLabelText.innerText = project.name;
+  projectDropdownLabelText.innerText = project.title;
 
-  projectList.innerHTML += `<li class='project-list-item'>${project.name}</li>`;
+  projectList.innerHTML += `<li class='project-list-item'>${
+    project.title
+  }</li>`;
+}
+
+function sendProjectToServer(project) {
+  return fetch("/api/v1/projects", {
+    method: "POST",
+    mode: "cors",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    body: JSON.stringify(project)
+  })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.log(error.message));
 }
 
 function noProjectName() {

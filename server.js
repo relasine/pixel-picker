@@ -13,12 +13,17 @@ app.use(express.static("public"));
 app.set("port", process.env.PORT || 3000);
 
 app.get("/api/v1/projects", (request, response) => {
-  let projects;
-
-  return response.status(200).json(projects);
+  database("projects")
+    .select()
+    .then(projects => {
+      response.status(200).json(projects);
+    })
+    .catch(error => {
+      response.status(500).json({ error: error.message });
+    });
 });
 
-app.post("api/v1/projects", (request, response) => {
+app.post("/api/v1/projects", (request, response) => {
   const project = request.body;
 
   if (!project.title) {
