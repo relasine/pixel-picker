@@ -135,6 +135,10 @@ header h1 {
   display: block;
 }
 
+.new-palette-btn:hover {
+  cursor: pointer;
+}
+
 .palette-generator {
   max-width: 350px;
   margin: auto;
@@ -225,13 +229,17 @@ header h1 {
 }
 
 .new-palette-submit {
-  background: url("./assets/images/check.png");
-  width: 28px;
+  background: url("./assets/images/add.png");
+  width: 20px;
   height: 20px;
   background-size: cover;
   background-repeat: no-repeat;
   image-rendering: pixelated;
   border: none;
+}
+
+.new-palette-submit:hover {
+  cursor: pointer;
 }
 
 .palette-input-form {
@@ -268,13 +276,17 @@ header h1 {
 }
 
 .new-project-submit {
-  background: url("./assets/images/check.png");
-  width: 28px;
+  background: url("./assets/images/add.png");
+  width: 20px;
   height: 20px;
   background-size: cover;
   background-repeat: no-repeat;
   image-rendering: pixelated;
   border: none;
+}
+
+.new-project-submit:hover {
+  cursor: pointer;
 }
 
 .no-project-name-warning {
@@ -317,9 +329,17 @@ header h1 {
 }
 
 .palette {
-  margin: 1rem auto;
+  position: relative;
+  margin: 1rem 0;
+  max-width: 340px;
   display: flex;
-  width: 300px;
+}
+
+.hex-row {
+  position: absolute;
+  display: flex;
+  justify-self: end;
+  right: 0;
 }
 
 .palette-label {
