@@ -1,7 +1,7 @@
 const bodyParser = require("body-parser");
 const express = require("express");
 const app = express();
-const environment = process.env.NODE_ENV || 'development';
+const environment = process.env.NODE_ENV || "development";
 const configuration = require("./knexfile")[environment];
 const database = require("knex")(configuration);
 
@@ -9,7 +9,6 @@ app.locals.title = "PixelPicker";
 
 app.use(bodyParser.json());
 app.use(express.static("public"));
-app.use(express.static("public/scripts"));
 
 app.set("port", process.env.PORT || 3000);
 
@@ -23,36 +22,38 @@ app.post("api/v1/projects", (request, response) => {
   const project = request.body;
 
   if (!project.title) {
-    return response
-      .status(422)
-      .send({error: `Expected format {title: <String>}. You're missing a 'title' property.`});
+    return response.status(422).send({
+      error: `Expected format {title: <String>}. You're missing a 'title' property.`
+    });
   }
 
-  database('projects').insert(project, 'id')
+  database("projects")
+    .insert(project, "id")
     .then(project => {
-      response.status(201).json({ id: project[0] })
+      response.status(201).json({ id: project[0] });
     })
     .catch(error => {
-      response.status(500().json({ error });
-    })
+      response.status(500().json({ error }));
+    });
 });
 
 app.post("api/v1/projects/:project_id/palettes", (request, response) => {
-  const palette = {...request.body, project_id: request.params};
+  const palette = { ...request.body, project_id: request.params };
 
   if (!palette.title) {
-    return response
-      .status(422)
-      .send({error: `Expected format {title: <String>}. You're missing a 'title' property.`});
+    return response.status(422).send({
+      error: `Expected format {title: <String>}. You're missing a 'title' property.`
+    });
   }
 
-  database('palettes').insert(palette, 'id')
+  database("palettes")
+    .insert(palette, "id")
     .then(palette => {
-      response.status(201).json({ id: palette[0] })
+      response.status(201).json({ id: palette[0] });
     })
     .catch(error => {
-      response.status(500().json({ error });
-    })
+      response.status(500().json({ error }));
+    });
 });
 
 app.get("api/v1/projects/:project_id/palettes", (request, response) => {
