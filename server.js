@@ -19,7 +19,7 @@ app.get("/api/v1/projects", (request, response) => {
       response.status(200).json(projects);
     })
     .catch(error => {
-      response.status(500).json({ error: error.message });
+      response.status(500).json({ error });
     });
 });
 
@@ -53,8 +53,8 @@ app.post("/api/v1/projects/:project_id/palettes", (request, response) => {
 
   database("palettes")
     .insert(palette, "id")
-    .then(palette => {
-      response.status(201).json({ id: palette[0] });
+    .then(data => {
+      response.status(201).json(data);
     })
     .catch(error => {
       response.status(500).json({ error });
@@ -79,12 +79,20 @@ app.get("/api/v1/projects/:project_id/palettes", (request, response) => {
     });
 });
 
-app.delete("api/v1/palettes", (request, response) => {
-  let palette = request.body;
+app.delete("/api/v1/palettes/:palette_id", (request, response) => {
+  const palette = request.params.palette_id;
 
-  // DELETE PALETTE //
+  console.log(palette);
 
-  return response.status(202).json();
+  database("palettes")
+    .where("id", palette)
+    .del()
+    .then(() => {
+      response
+        .status(202)
+        .json({ message: `succesfully removed palette #${palette}` });
+    })
+    .catch(error => response.status(500).json({ error }));
 });
 
 app.listen(app.get("port"), () => {

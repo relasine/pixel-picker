@@ -208,7 +208,6 @@ function addPalette(event) {
 }
 
 function addPaletteHTML(newPalette, id) {
-  console.log(newPalette, id);
   const array = Array.from(projectsSection.children);
 
   const ourProject = array.find(child => {
@@ -247,16 +246,33 @@ function sendPaletteToServer(palette) {
     body: JSON.stringify(palette)
   })
     .then(response => response.json())
-    .then(data =>
-      addPaletteHTML(palette, parseInt(projectDropdownLabelText.id))
-    )
+    .then(data => {
+      addPaletteHTML(
+        { ...palette, id: data },
+        parseInt(projectDropdownLabelText.id)
+      );
+    })
     .catch(error => console.log(error.message));
 }
 
 function deletePalette(event) {
   if (event.target.classList.contains("delete-btn")) {
-    const id = event.target.parentNode;
-    event.target.parentNode.parentNode.removeChild(id);
+    const id = event.target.id;
+    const node = event.target.parentNode.parentNode;
+
+    return fetch(`/api/v1/palettes/${id}`, {
+      method: "DELETE",
+      mode: "cors",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        event.target.parentNode.parentNode.parentNode.removeChild(node);
+      });
   }
 }
 
