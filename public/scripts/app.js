@@ -17,7 +17,7 @@ newPaletteBtn.addEventListener("click", generateNewPalette);
 swatchRow.addEventListener("click", toggleLock);
 newProjectBtn.addEventListener("submit", addProject);
 newPaletteSubmit.addEventListener("submit", addPalette);
-projectsSection.addEventListener("click", deletePalette);
+projectsSection.addEventListener("click", handlePaletteClick);
 projectDropdownArrow.addEventListener("click", handleDropdown);
 projectList.addEventListener("click", selectProject);
 
@@ -218,8 +218,23 @@ function addPaletteHTML(newPalette, id) {
     return;
   }
 
+  console.log(newPalette);
+
+  const hexObject = {
+    id: newPalette.id,
+    hexes: [
+      newPalette.color1,
+      newPalette.color2,
+      newPalette.color3,
+      newPalette.color4,
+      newPalette.color5
+    ]
+  };
+
+  palettes.push(hexObject);
+
   const newPaletteElement = `
-    <div class='palette'>
+    <div class='palette' id=${newPalette.id}>
       <p class='palette-label'>${newPalette.title}</p>
       <div class='hex-row'>
         <div style='background:${newPalette.color1}' class='hex hex1'></div>
@@ -248,32 +263,61 @@ function sendPaletteToServer(palette) {
     .then(response => response.json())
     .then(data => {
       addPaletteHTML(
-        { ...palette, id: data },
+        { ...palette, id: data[0] },
         parseInt(projectDropdownLabelText.id)
       );
     })
     .catch(error => console.log(error.message));
 }
 
-function deletePalette(event) {
+function handlePaletteClick(event) {
   if (event.target.classList.contains("delete-btn")) {
-    const id = event.target.id;
-    const node = event.target.parentNode.parentNode;
-
-    return fetch(`/api/v1/palettes/${id}`, {
-      method: "DELETE",
-      mode: "cors",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8"
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        event.target.parentNode.parentNode.parentNode.removeChild(node);
-      });
+    deletePalette(event);
+  } else if (event.target.classList.contains("palette")) {
+    const hexRow = event.target.id;
+    const hexObject = palettes.find(palette => {
+      return palette.id === parseInt(hexRow);
+    });
+    populateMainPalette(hexObject);
+  } else if (event.target.classList.contains("palette-label")) {
+    const hexRow = event.target.parentNode.id;
+    const hexObject = palettes.find(palette => {
+      return palette.id === parseInt(hexRow);
+    });
+    populateMainPalette(hexObject);
+  } else if (event.target.classList.contains("hex")) {
+    const hexRow = event.target.parentNode.parentNode.id;
+    const hexObject = palettes.find(palette => {
+      return palette.id === parseInt(hexRow);
+    });
+    populateMainPalette(hexObject);
   }
+}
+
+function populateMainPalette(hexObject) {
+  for (let i = 0; i < swatchRow.children.length; i++) {
+    swatchRow.children[i].style.background = hexObject.hexes[i];
+    swatchRow.children[i].children[0].innerText = hexObject.hexes[i];
+  }
+}
+
+function deletePalette(event) {
+  const id = event.target.id;
+  const node = event.target.parentNode.parentNode;
+
+  return fetch(`/api/v1/palettes/${id}`, {
+    method: "DELETE",
+    mode: "cors",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8"
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      event.target.parentNode.parentNode.parentNode.removeChild(node);
+    });
 }
 
 function handleDropdown() {
