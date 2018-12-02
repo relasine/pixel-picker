@@ -244,6 +244,19 @@ header h1 {
 
 .palette-input-form {
   margin: 0;
+  position: relative;
+}
+
+.no-active-project-warning {
+  position: absolute;
+  top: 10px;
+  height: 0;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.no-active-project-warning.show {
+  height: 20px;
 }
 
 .divider {

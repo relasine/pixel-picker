@@ -10,6 +10,9 @@ const projectDropdownLabelText = document.querySelector(
 const projectList = document.querySelector(".project-list");
 const projectDropdownArrow = document.querySelector(".project-dropdown-arrow");
 const paletteNameInput = document.querySelector(".palette-input");
+const noActiveProjectWarningText = document.querySelector(
+  ".no-active-project-warning"
+);
 let projects = [];
 let palettes = [];
 
@@ -68,6 +71,7 @@ function setProjects(data) {
   data.forEach(project => {
     addProjectHTML(project);
     getPalettes(project.id);
+    projects.push(project.title);
   });
 }
 
@@ -131,7 +135,17 @@ function addProject(event) {
     return;
   }
 
+  const duplicate = projects.find(project => {
+    return project === projectNameInput.value;
+  });
+
+  if (duplicate) {
+    noProjectName();
+    return;
+  }
+
   createNewProject(projectNameInput.value);
+  projects.push(projectNameInput.value);
   projectNameInput.value = "";
 }
 
@@ -181,16 +195,16 @@ function noProjectName() {
   }, 5000);
 }
 
-function duplicateProjectName() {
-  duplicateProjectNameWarning.classList.add("show");
-
-  setTimeout(() => {
-    duplicateProjectNameWarning.classList.remove("show");
-  }, 5000);
-}
-
 function addPalette(event) {
   event.preventDefault();
+
+  if (projectDropdownLabelText.innerText === "") {
+    console.log("no project");
+    noActiveProjectWarningText.classList.toggle("show");
+    setTimeout(noProjectWarningClear, 5000);
+    return;
+  }
+
   const palette = [];
 
   let paletteName = paletteNameInput.value || "palette";
@@ -205,6 +219,10 @@ function addPalette(event) {
 
   sendPaletteToServer(newPalette);
   paletteNameInput.value = "";
+}
+
+function noProjectWarningClear() {
+  noActiveProjectWarningText.classList.toggle("show");
 }
 
 function addPaletteHTML(newPalette, id) {
