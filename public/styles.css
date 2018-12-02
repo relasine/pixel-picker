@@ -603,7 +603,9 @@ header h1 {
     max-width: 600px;
     flex-flow: row wrap;
   }
-
+  .project-label {
+    margin-bottom: 1rem;
+  }
   .project {
     margin: auto;
   }
