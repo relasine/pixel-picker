@@ -236,8 +236,6 @@ function addPaletteHTML(newPalette, id) {
     return;
   }
 
-  console.log(newPalette);
-
   const hexObject = {
     id: newPalette.id,
     hexes: [
