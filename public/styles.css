@@ -82,6 +82,19 @@ header h1 {
   transition: 0.3s;
 }
 
+.hex-lock {
+  margin-top: 15px;
+  width: 22px;
+  height: 30px;
+  background: url("./assets/images/unlocked.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  background-repeat: no-repeat;
+  transition: 0.3s;
+}
+
 .locked {
   margin-top: 18px;
   width: 24px;
@@ -95,21 +108,7 @@ header h1 {
   transition: 0.3s;
 }
 
-.unlocked {
-  margin-top: 15px;
-  width: 22px;
-  height: 30px;
-  background: url("./assets/images/unlocked.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  background-repeat: no-repeat;
-  transition: 0.3s;
-}
-
-.locked:hover,
-.unlocked:hover {
+.hex-lock {
   cursor: pointer;
 }
 

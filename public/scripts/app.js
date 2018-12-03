@@ -77,7 +77,7 @@ function setProjects(data) {
 
 function generateNewPalette() {
   for (let i = 0; i < swatchRow.children.length; i++) {
-    if (swatchRow.children[i].children[1].className === "unlocked") {
+    if (!swatchRow.children[i].children[1].classList.contains("locked")) {
       let newHex = generateRandomHex();
       swatchRow.children[i].style.background = newHex;
       swatchRow.children[i].children[0].innerText = newHex;
@@ -117,12 +117,8 @@ function generateRandomHex() {
 }
 
 function toggleLock(event) {
-  if (
-    event.target.classList.contains("locked") ||
-    event.target.classList.contains("unlocked")
-  ) {
+  if (event.target.classList.contains("hex-lock")) {
     event.target.classList.toggle("locked");
-    event.target.classList.toggle("unlocked");
   }
 }
 
@@ -210,7 +206,7 @@ function addPalette(event) {
   let paletteName = paletteNameInput.value || "palette";
 
   for (let i = 0; i < swatchRow.children.length; i++) {
-    if (swatchRow.children[i].children[1].className === "unlocked") {
+    if (!swatchRow.children[i].children[1].classList.contains("locked")) {
       palette.push(swatchRow.children[i].children[0].innerText);
     }
   }
